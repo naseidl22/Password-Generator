@@ -9,7 +9,8 @@ const strengthText = document.getElementById('strength-text');
 const feedbackList = document.getElementById('feedback-list');
 const passwordField = document.getElementById('generated-password');
 const lengthSlider = document.getElementById('length');
-
+const copyBtn = document.getElementById('copy-btn');
+const genBtn = document.getElementById('generate-btn');
 
 let excludedWords = [];
 
@@ -65,6 +66,35 @@ document.getElementById('uppercase').addEventListener('change', updatePassword);
 document.getElementById('numbers').addEventListener('change', updatePassword);
 document.getElementById('symbols').addEventListener('change', updatePassword);
 
+const toggleBtn = document.getElementById("toggle-visibility");
+//const passwordField = document.getElementById("generated-password");
+
+toggleBtn.addEventListener("click", () => {
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleBtn.textContent = "🙈";
+    } else {
+        passwordField.type = "password";
+        toggleBtn.textContent = "👁";
+    }
+});
+
+copyBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(passwordField.value)
+        .then(() => {
+            copyBtn.textContent = "Copied!";
+            setTimeout(() => {
+                copyBtn.textContent = "Copy";
+            }, 2000);
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+});
+
+genBtn.addEventListener("click", () => {
+    updatePassword();
+});
 
 function mungePassword(password){
 
@@ -192,6 +222,27 @@ function cleanPassword(passwords){
     return {flags, matchedWords, completeMatch};
 }
 
+// Search for common words and set flags
+function cleanOnePassword(password){
+
+    let matchedWords = [];
+    let cleanedPassword = password.toLowerCase();
+
+    //console.log(excludedWords.length);
+
+    for (let word of excludedWords) {
+        let index = cleanedPassword.indexOf(word);
+
+        if(index !== -1){
+            // Add matched word
+            if (!matchedWords.includes(word))
+                matchedWords.push(word);
+        }
+    }
+
+    return matchedWords;
+}
+
 // Calculate time to crack in years based on entropy
 function timeToCrack(entropy) {
     const attemptsPerSecond = 1e10;
@@ -273,8 +324,26 @@ function updatePassword(){
 
     let options = getOptions();
     let passwordLength = lengthSlider.value;
-    password = generatePassword(passwordLength, options);
+    let password = "password";
+    while(cleanOnePassword(password).length > 0){
+        password = generatePassword(passwordLength, options);
+        console.log(cleanOnePassword(password));
+        //break;
+    }
+
+    //password = generatePassword(passwordLength, options);
     passwordField.value = password;
     console.log(password);
+
+    let {entropy, feedback} = getPasswordEntropy(password);
+    let time = timeToCrack(entropy);
+    
+    // Calculate Score
+    let score = scorePassword(entropy);
+
+    // Update UI
+    //scoreElement.textContent = `Entropy: ${entropy} bits`;
+    //timeElement.textContent = `Password Strength Score: ${score.toFixed(2)}`;
+    strengthMeter.value = score;
 
 }
