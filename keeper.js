@@ -7,99 +7,27 @@ const strengthMeter = document.getElementById('strength-meter');
 const plaintext = document.getElementById('plaintext');
 const strengthText = document.getElementById('strength-text');
 const feedbackList = document.getElementById('feedback-list');
+const passwordField = document.getElementById('generated-password');
+const lengthSlider = document.getElementById('length');
+
 
 let excludedWords = [];
 
 const reverseSubstitutions = {
     '@': 'a',
     '4': 'a',
-
     '8': 'b',
-
     '3': 'e',
-
     '6': 'g',
     '9': 'g',
-
     '1': 'i',
     'l': 'i',
-
     '0': 'o',
-
     '5': 's',
     '$': 's',
-
     '7': 't',
-
     '2': 'z'
 };
-
-// Set up event listener for password input
-document.getElementById('password').addEventListener('input', function() {
-
-    // Get password
-    const password = passwordInput.value;
-
-    // If empty, revert to defaults
-    if (!password) {
-        strengthMeter.value = 0;
-        strengthMeter.className = "";
-        strengthText.textContent = "Strength: Very Weak";
-        feedbackList.innerHTML = "";
-        plaintext.textContent = "";
-        scoreElement.textContent = `Entropy: 0 bits`;
-        timeElement.textContent = `Password Strength Score: 0`;
-        strengthMeter.classList.add("very-weak");
-
-        return;
-    }
-
-    // Get entropy and feeback
-    let {entropy, feedback} = getPasswordEntropy(password);
-    let time = timeToCrack(entropy);
-    
-    // Calculate Score
-    let score = scorePassword(entropy);
-
-    // Update UI
-    scoreElement.textContent = `Entropy: ${entropy} bits`;
-    timeElement.textContent = `Password Strength Score: ${score.toFixed(2)}`;
-    strengthMeter.value = score;
-    let categoryName = category(score);
-    strengthText.textContent = `Strength: ${categoryName}`;
-    plaintext.textContent = password;
-
-    // Set meter color
-    strengthMeter.classList.remove("very-weak", "weak", "fair", "strong", "very-strong");
-    if(categoryName === "Very Weak"){
-        strengthMeter.classList.add("very-weak");
-    }
-    else if(categoryName === "Weak"){
-        strengthMeter.classList.add("weak");
-    }
-    else if(categoryName === "Fair"){
-        strengthMeter.classList.add("fair");
-    }
-    else if(categoryName === "Strong"){
-        strengthMeter.classList.add("strong");
-    }
-    else if(categoryName === "Very Strong"){
-        strengthMeter.classList.add("very-strong");
-    }
-    //console.log(strengthMeter.className);
-    //strengthMeter.style.color = colors[categoryName];
-    
-    // Update feedback list
-    feedbackList.innerHTML = "";
-    for (let item of feedback) {
-        const li = document.createElement("li");
-        li.textContent = item;
-        if(li.textContent.startsWith("Consider removing common words")){
-            li.classList.add("bad");
-        }
-        feedbackList.appendChild(li);
-    }
-});
 
 // Get common words from files directory
 window.onload = async function() {
@@ -120,7 +48,22 @@ window.onload = async function() {
 
     //console.log(excludedWords);
 
+    //password = generatePassword(16, {uppercase: true, lowercase: true, numbers: true, symbols: true});
+    //passwordField.value = password;
+    //console.log(password);
+
+    updatePassword();
+
 }
+
+document.getElementById('length').addEventListener('input', function() {
+    document.getElementById('length-value').textContent = this.value;
+    updatePassword();
+});
+
+document.getElementById('uppercase').addEventListener('change', updatePassword);
+document.getElementById('numbers').addEventListener('change', updatePassword);
+document.getElementById('symbols').addEventListener('change', updatePassword);
 
 
 function mungePassword(password){
@@ -282,6 +225,16 @@ function scorePassword(entropy){
     return Math.min(score, 100);
 }
 
+function getOptions(){
+
+    //console.log(document.getElementById('uppercase').checked);
+    return {
+        uppercase: document.getElementById('uppercase').checked,
+        numbers: document.getElementById('numbers').checked,
+        symbols: document.getElementById('symbols').checked,
+    }
+}
+
 // Categorize password strength based on score
 function category(entropy){
     if (entropy >= 100)
@@ -293,4 +246,35 @@ function category(entropy){
     if (entropy >= 30)
         return "Weak";
     return "Very Weak";
+}
+
+function generatePassword(length, options) {
+    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowercase = "abcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
+    const symbols = "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+
+
+    let charset = lowercase; // Lowercase is always included
+    if (options.uppercase) charset += uppercase;
+    if (options.lowercase) charset += lowercase;
+    if (options.numbers) charset += numbers;
+    if (options.symbols) charset += symbols;
+
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        password += charset[Math.floor(Math.random() * charset.length)];
+    }
+
+    return password;
+}
+
+function updatePassword(){
+
+    let options = getOptions();
+    let passwordLength = lengthSlider.value;
+    password = generatePassword(passwordLength, options);
+    passwordField.value = password;
+    console.log(password);
+
 }

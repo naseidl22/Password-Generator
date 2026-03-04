@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body>
     <div class="main-container">
@@ -13,29 +13,25 @@
 
         <!-- Generated Password Display -->
         <div class="password-display">
-            <input type="text" id="generated-password" readonly>
+            <input type="text" id="generated-password">
             <button id="copy-btn">Copy</button>
         </div>
 
         <!-- Length Slider -->
         <div class="control-group">
             <label for="length">
-                Password Length: <span id="length-value">16</span>
+                Password Length: <span id="length-value">20</span>
             </label>
-            <input type="range" id="length" min="6" max="64" value="16">
+            <input type="range" id="length" min="8" max="100" value="20">
         </div>
 
         <!-- Character Options -->
         <div class="options">
             <label><input type="checkbox" id="uppercase" checked> Uppercase (A-Z)</label>
-            <label><input type="checkbox" id="lowercase" checked> Lowercase (a-z)</label>
             <label><input type="checkbox" id="numbers" checked> Numbers (0-9)</label>
             <label><input type="checkbox" id="symbols" checked> Symbols (!@#$)</label>
-            <label><input type="checkbox" id="exclude-similar"> Exclude Similar Characters (i, l, 1, O, 0)</label>
         </div>
 
-        <!-- Generate Button -->
-        <button id="generate-btn">Generate Password</button>
 
         <!-- Strength Meter -->
         <div class="strength-section">
