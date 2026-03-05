@@ -314,7 +314,7 @@ function generatePassword(length, options) {
 
     let password = "";
     for (let i = 0; i < length; i++) {
-        password += charset[Math.floor(Math.random() * charset.length)];
+        password += charset[secureRandomInt(0, charset.length - 1)];
     }
 
     return password;
@@ -346,4 +346,22 @@ function updatePassword(){
     //timeElement.textContent = `Password Strength Score: ${score.toFixed(2)}`;
     strengthMeter.value = score;
 
+}
+
+function secureRandomInt(min, max) {
+    if (max <= min) throw new Error("max must be greater than min");
+
+    const range = max - min + 1;
+    const maxUint32 = 0xFFFFFFFF;
+    const limit = maxUint32 - (maxUint32 % range);
+
+    let rand;
+    const arr = new Uint32Array(1);
+
+    do {
+        crypto.getRandomValues(arr);
+        rand = arr[0];
+    } while (rand >= limit);
+
+    return min + (rand % range);
 }
