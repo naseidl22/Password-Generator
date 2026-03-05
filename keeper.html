@@ -11,20 +11,44 @@
 
     <h1>Password Generator</h1>
 
-    <!-- Password Display -->
-    <div class="password-wrapper">
-        <input type="password" id="generated-password" readonly>
-        
-        <button id="toggle-visibility" class="icon-btn">👁</button>
-        <button id="copy-btn" class="copy-btn">Copy</button>
+    <!-- Password + Generate Row -->
+    <div class="password-row">
+
+        <!-- Password Display -->
+        <div class="password-wrapper">
+
+            <input type="password" id="generated-password" readonly>
+
+            <!-- Show / Hide Button -->
+            <button id="toggle-visibility" class="icon-btn">
+                <img id="visibility-icon" src="assets/icon-eye-open.svg" alt="toggle password">
+            </button>
+
+        </div>
+
+        <!-- Generate Button -->
+        <button id="generate-btn" class="generate-icon-btn">
+            <img src="assets/icon-dice.svg" alt="generate password">
+        </button>
+
     </div>
+
+        <!-- Strength Section -->
+    <div class="strength-section">
+        <meter id="strength-meter" min="0" max="100"></meter>
+    </div>
+
+
+    <!-- Copy button now below -->
+    <button id="copy-btn" class="copy-btn">Copy</button>
 
     <!-- Length Slider -->
     <div class="control-group">
-        <label>
+
+        <input type="range" id="length" min="8" max="100" value="20">
+                <label>
             Password Length: <span id="length-value">20</span>
         </label>
-        <input type="range" id="length" min="6" max="100" value="20">
     </div>
 
     <!-- Options -->
@@ -34,12 +58,6 @@
         <label><input type="checkbox" id="symbols" checked> Symbols</label>
     </div>
 
-    <button id="generate-btn" class="generate-btn">Generate Password</button>
-
-    <!-- Strength Section -->
-    <div class="strength-section">
-        <meter id="strength-meter" min="0" max="100"></meter>
-    </div>
 
 </div>
 

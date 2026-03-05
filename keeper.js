@@ -11,6 +11,7 @@ const passwordField = document.getElementById('generated-password');
 const lengthSlider = document.getElementById('length');
 const copyBtn = document.getElementById('copy-btn');
 const genBtn = document.getElementById('generate-btn');
+const icon = document.getElementById("visibility-icon");
 
 let excludedWords = [];
 
@@ -72,10 +73,12 @@ const toggleBtn = document.getElementById("toggle-visibility");
 toggleBtn.addEventListener("click", () => {
     if (passwordField.type === "password") {
         passwordField.type = "text";
-        toggleBtn.textContent = "🙈";
+        //toggleBtn.textContent = "🙈";
+        icon.src = "assets/icon-eye-closed.svg";
     } else {
         passwordField.type = "password";
-        toggleBtn.textContent = "👁";
+        //toggleBtn.textContent = "👁";
+        icon.src = "assets/icon-eye-open.svg";
     }
 });
 
