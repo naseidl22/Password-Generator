@@ -543,3 +543,33 @@ passphraseOptions.addEventListener("click", function(event) {
     }
 
 });
+
+// SAVING ADDITIONS
+
+document.addEventListener('DOMContentLoaded', () => {
+    const saveBtn = document.getElementById('save-btn');
+
+    saveBtn.addEventListener('click', () => {
+        const site = document.getElementById('site-input').value.trim();
+        const username = document.getElementById('username-input').value.trim();
+        const password = document.getElementById('generated-password').value.trim();
+
+        if (!site || !username || !password) {
+            alert("All fields are required!");
+            return;
+        }
+
+        // Load existing passwords
+        const stored = JSON.parse(localStorage.getItem('passwords') || '[]');
+
+        // Add new entry
+        stored.push({ site, username, password });
+
+        // Save back
+        localStorage.setItem('passwords', JSON.stringify(stored));
+
+        alert("Password saved successfully!");
+        document.getElementById('site-input').value = '';
+        document.getElementById('username-input').value = '';
+    });
+});

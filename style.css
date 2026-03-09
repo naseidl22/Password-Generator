@@ -287,3 +287,111 @@ input[type="range"]::-moz-range-thumb:hover {
     font-size: 14px;
     font-weight: 500;
 }
+
+.save-password-section {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-password-section input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    flex: 1;
+}
+
+.save-password-section button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+.save-password-section button:hover {
+    background: #1d4ed8;
+}
+
+.password-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.password-entry button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+.password-entry button:hover {
+    background: #1d4ed8;
+}
+
+.password-text.hidden {
+    display: none;
+}
+
+/* Clear All Button */
+#clear-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #ef4444; /* red */
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 12px;
+}
+
+#clear-btn:hover {
+    background: #dc2626; /* darker red on hover */
+}
+
+/* Search Input */
+.search-container {
+    margin-bottom: 12px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+}
+
+#search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+
+.saved-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.saved-link a,
+.saved-link button {
+    padding: 10px 20px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.saved-link a:hover,
+.saved-link button:hover {
+    background: #1d4ed8;
+}
