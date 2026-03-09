@@ -12,75 +12,119 @@
     <!-- Password + Generate Row -->
     <div class="password-row">
 
-        <!-- Password Display -->
         <div class="password-wrapper">
 
             <input type="password" id="generated-password" readonly>
 
-            <!-- Show / Hide Button -->
             <button id="toggle-visibility" class="icon-btn">
                 <img id="visibility-icon" src="assets/icon-eye-open.svg" alt="toggle password">
             </button>
 
         </div>
 
-        <!-- Generate Button -->
         <button id="generate-btn" class="generate-icon-btn">
             <img src="assets/icon-dice.svg" alt="generate password">
         </button>
 
     </div>
 
-        <!-- Strength Section -->
+    <!-- Strength Section -->
     <div class="strength-section">
         <meter id="strength-meter" min="0" max="100"></meter>
     </div>
 
-
     <!-- Copy + Strength Row -->
     <div class="copy-strength-row">
 
-    
         <div class="strength-display">
             Strength: <span id="strength-text">Weak</span>
         </div>
 
         <button id="copy-btn" class="copy-btn">Copy</button>
 
-
     </div>
 
     <!-- Mode Selector -->
     <div class="mode-row">
-    
+
         <label class="mode-option">
             <input type="radio" name="mode" value="password" checked>
             Password
         </label>
-    
+
         <label class="mode-option">
             <input type="radio" name="mode" value="passphrase">
             Passphrase
         </label>
-    
+
     </div>
 
     <!-- Length Slider -->
     <div class="control-group">
 
         <input type="range" id="length" min="8" max="100" value="20">
-                <label>
-            Password Length: <span id="length-value">20</span>
+
+        <label>
+            <span id="length-label">Password Length</span>:
+            <span id="length-value">20</span>
         </label>
+
     </div>
 
-    <!-- Options -->
-    <div class="options">
+    <!-- PASSWORD OPTIONS -->
+    <div class="options" id="password-options">
         <label><input type="checkbox" id="uppercase" checked> Uppercase</label>
         <label><input type="checkbox" id="numbers" checked> Numbers</label>
         <label><input type="checkbox" id="symbols" checked> Symbols</label>
     </div>
 
+    <!-- PASSPHRASE OPTIONS -->
+
+    <div class="options hidden" id="passphrase-options">
+
+        <!-- Extra options -->
+        <label>
+            <input type="checkbox" id="capitalize">
+            Capitals
+        </label>
+
+        <label>
+            <input type="checkbox" id="random-number">
+            Numbers
+        </label>
+
+        <!-- Separators -->
+        <label>
+            <input type="radio" name="separator" value="-" checked>
+            -
+        </label>
+
+        <label>
+            <input type="radio" name="separator" value=".">
+            .
+        </label>
+
+        <label>
+            <input type="radio" name="separator" value="_">
+            _
+        </label>
+
+        <label>
+            <input type="radio" name="separator" value="!">
+            !
+        </label>
+
+        <label>
+            <input type="radio" name="separator" value="?">
+            ?
+        </label>
+
+        <label>
+            <input type="radio" name="separator" value=" ">
+            ␣
+        </label>
+
+    </div>
 
 </div>
 

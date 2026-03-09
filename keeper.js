@@ -13,7 +13,15 @@ const copyBtn = document.getElementById('copy-btn');
 const genBtn = document.getElementById('generate-btn');
 const icon = document.getElementById("visibility-icon");
 
+const modeRadios = document.querySelectorAll('input[name="mode"]');
+const passwordOptions = document.getElementById("password-options");
+const passphraseOptions = document.getElementById("passphrase-options");
+const lengthLabel = document.getElementById("length-label");
+const lengthValue = document.getElementById("length-value");
+
 let excludedWords = [];
+
+let passphraseWords = [];
 
 const reverseSubstitutions = {
     '@': 'a',
@@ -55,6 +63,9 @@ window.onload = async function() {
     //console.log(password);
 
     updatePassword();
+
+    passphraseWords = await loadDicewareWords('words/diceware.txt');
+    //console.log(passphraseWords);
 
 }
 
@@ -325,6 +336,13 @@ function generatePassword(length, options) {
 
 function updatePassword(){
 
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+
+    if (mode !== "password") {
+        updatePassphrase();
+        return;
+    }
+
     let options = getOptions();
     let passwordLength = lengthSlider.value;
     let password = "password";
@@ -351,6 +369,16 @@ function updatePassword(){
 
 }
 
+function updatePassphrase(){
+    let numWords = lengthSlider.value;
+    const separator = document.querySelector('input[name="separator"]:checked').value;
+
+    let passphrase = generatePassphrase(numWords, separator);
+
+    passwordField.value = passphrase;
+
+}
+
 function secureRandomInt(min, max) {
     if (max <= min) throw new Error("max must be greater than min");
 
@@ -368,3 +396,133 @@ function secureRandomInt(min, max) {
 
     return min + (rand % range);
 }
+
+modeRadios.forEach(radio => {
+    radio.addEventListener("change", updateModeUI);
+});
+
+
+function updateModeUI() {
+
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+
+    if (mode === "password") {
+
+        passwordOptions.classList.remove("hidden");
+        passphraseOptions.classList.add("hidden");
+
+        lengthLabel.textContent = "Password Length";
+
+        lengthSlider.min = 8;
+        lengthSlider.max = 100;
+
+        if (lengthSlider.value < 8) lengthSlider.value = 20;
+
+    } 
+    else { //passphrase
+
+        passwordOptions.classList.add("hidden");
+        passphraseOptions.classList.remove("hidden");
+
+        lengthLabel.textContent = "Number of Words";
+
+        lengthSlider.min = 5;
+        lengthSlider.max = 9;
+
+        lengthSlider.value = 5;
+
+    }
+
+    lengthValue.textContent = lengthSlider.value;
+    updatePassword();
+}
+
+async function loadDicewareWords(filePath) {
+    const response = await fetch(filePath);
+    const text = await response.text();
+
+    const words = [];
+
+    const lines = text.split("\n");
+
+    for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        const parts = line.split(/\s+/);
+        const word = parts[1];
+
+        if (word) {
+            words.push(word);
+        }
+    }
+
+    return words;
+}
+function generatePassphrase(numWords) {
+
+    const capitalize = document.getElementById("capitalize").checked;
+    const includeNumber = document.getElementById("random-number").checked;
+
+    const separator = document.querySelector('input[name="separator"]:checked').value;
+
+    let passphrase = "";
+
+    let selectedWords = [];
+
+    let selectedIndex = -1;
+    let randomNum = -1;
+
+    if (includeNumber) {
+        selectedIndex = secureRandomInt(0, numWords - 1); // Randomly decide where to insert the number
+        randomNum = secureRandomInt(0, 9); // Generate a random number between 0 and 9
+    }
+
+    for (let i = 0; i < numWords; i++) {
+
+        let num = secureRandomInt(0, 7775); // 7776 words in the list
+        while(selectedWords.includes(num)){ // Ensure no duplicate words
+            num = secureRandomInt(0, 7775);
+        }
+
+        let selectedWord = passphraseWords[num];
+
+        if (capitalize) {
+            selectedWord = selectedWord.charAt(0).toUpperCase() + selectedWord.slice(1);
+        }
+
+        passphrase += selectedWord;
+        selectedWords.push(num);
+
+        if (i == selectedIndex) {
+            passphrase += randomNum;
+        }
+
+        if (i != numWords - 1)
+            passphrase += separator;
+
+
+
+    }
+
+    return passphrase; 
+}
+
+passphraseOptions.addEventListener("click", function(event) {
+
+    if (event.target.type === "radio") {
+        updatePassword();
+        //console.log("Separator changed:", event.target.value);
+    }
+
+    if (event.target.id === "capitalize") {
+        updatePassword();
+        //console.log("Capitalize toggled:", event.target.checked);
+    }
+
+    if (event.target.id === "random-number") {
+        updatePassword();
+        //console.log("Random number toggled:", event.target.checked);
+    }
+
+});
