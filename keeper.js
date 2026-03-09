@@ -549,7 +549,7 @@ passphraseOptions.addEventListener("click", function(event) {
 document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('save-btn');
 
-    saveBtn.addEventListener('click', () => {
+    saveBtn.addEventListener('click', async () => {
         const site = document.getElementById('site-input').value.trim();
         const username = document.getElementById('username-input').value.trim();
         const password = document.getElementById('generated-password').value.trim();
@@ -563,7 +563,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const stored = JSON.parse(localStorage.getItem('passwords') || '[]');
 
         // Add new entry
-        stored.push({ site, username, password });
+        const result = await encryptText(password);
+
+        stored.push({
+            site,
+            username,
+            password: result.encrypted,
+            iv: result.iv
+        });
 
         // Save back
         localStorage.setItem('passwords', JSON.stringify(stored));

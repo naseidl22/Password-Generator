@@ -26,7 +26,7 @@ function renderPasswords(filter = '') {
         div.innerHTML = `
             <strong>${entry.site}</strong> (${entry.username})
             <button class="reveal-btn">Reveal</button>
-            <span class="hidden password-text">${entry.password}</span>
+            <span class="hidden password-text"></span>
             <button class="copy-btn-list">Copy</button>
             <button class="delete-btn">Delete</button>
         `;
@@ -37,20 +37,35 @@ function renderPasswords(filter = '') {
         const deleteBtn = div.querySelector('.delete-btn');
 
         // Reveal / Hide
-        revealBtn.addEventListener('click', () => {
+        revealBtn.addEventListener('click', async () => {
+        
             if (passwordText.classList.contains('hidden')) {
+            
+                const decrypted = await decryptText(entry.password, entry.iv);
+            
+                passwordText.textContent = decrypted;
+            
                 passwordText.classList.remove('hidden');
                 revealBtn.textContent = 'Hide';
+            
             } else {
+            
                 passwordText.classList.add('hidden');
+                passwordText.textContent = "";
                 revealBtn.textContent = 'Reveal';
+            
             }
+        
         });
 
         // Copy
-        copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(entry.password)
+        copyBtn.addEventListener('click', async () => {
+        
+            const decrypted = await decryptText(entry.password, entry.iv);
+        
+            navigator.clipboard.writeText(decrypted)
                 .then(() => alert('Password copied!'));
+        
         });
 
         // Delete specific password

@@ -1,10 +1,17 @@
-// Derive AES key from master password
-async function getMasterKey(password) {
+// OBVIOUSLY THIS IS NOT A REALISTIC MASTER KEY
+// NEVER STORE KEY IN PLAINTEXT
+// DEMO PURPOSES ONLY
+// ASSUMING THAT THE USER HAS ALREADY LOGGED IN AND THIS KEY IS SECURELY STORED SOMEWHERE SAFE
+
+const MASTER_KEY = "0yL^[fWUv~ts$L-WK!s*gzeb5e~@BHCj^e8Zvw/;zGgaf^2b;y";
+
+async function getKey() {
     const enc = new TextEncoder();
+
     const keyMaterial = await crypto.subtle.importKey(
         "raw",
-        enc.encode(password),
-        "PBKDF2",
+        enc.encode(MASTER_KEY),
+        { name: "PBKDF2" },
         false,
         ["deriveKey"]
     );
@@ -12,58 +19,46 @@ async function getMasterKey(password) {
     return crypto.subtle.deriveKey(
         {
             name: "PBKDF2",
-            salt: enc.encode("my_salt"),
+            salt: enc.encode("demo-salt"),
             iterations: 100000,
             hash: "SHA-256"
         },
         keyMaterial,
         { name: "AES-GCM", length: 256 },
-        true,
+        false,
         ["encrypt", "decrypt"]
     );
 }
 
-// Encrypt text
-async function encryptText(key, plaintext) {
+async function encryptText(text) {
+    const key = await getKey();
     const enc = new TextEncoder();
+
     const iv = crypto.getRandomValues(new Uint8Array(12));
+
     const encrypted = await crypto.subtle.encrypt(
         { name: "AES-GCM", iv },
         key,
-        enc.encode(plaintext)
+        enc.encode(text)
     );
-    return { encrypted: arrayBufferToBase64(encrypted), iv: arrayBufferToBase64(iv) };
+
+    return {
+        encrypted: btoa(String.fromCharCode(...new Uint8Array(encrypted))),
+        iv: btoa(String.fromCharCode(...iv))
+    };
 }
 
-// Decrypt text
-async function decryptText(key, ciphertext, iv) {
-    const dec = new TextDecoder();
-    const encryptedArray = base64ToArrayBuffer(ciphertext);
-    const ivArray = base64ToArrayBuffer(iv);
+async function decryptText(cipher, iv) {
+    const key = await getKey();
+
+    const encryptedBytes = Uint8Array.from(atob(cipher), c => c.charCodeAt(0));
+    const ivBytes = Uint8Array.from(atob(iv), c => c.charCodeAt(0));
+
     const decrypted = await crypto.subtle.decrypt(
-        { name: "AES-GCM", iv: ivArray },
+        { name: "AES-GCM", iv: ivBytes },
         key,
-        encryptedArray
+        encryptedBytes
     );
-    return dec.decode(decrypted);
-}
 
-// Helpers
-function arrayBufferToBase64(buffer) {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    for (let i = 0; i < bytes.byteLength; i++) {
-        binary += String.fromCharCode(bytes[i]);
-    }
-    return btoa(binary);
-}
-
-function base64ToArrayBuffer(base64) {
-    const binary = atob(base64);
-    const len = binary.length;
-    const buffer = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-        buffer[i] = binary.charCodeAt(i);
-    }
-    return buffer;
+    return new TextDecoder().decode(decrypted);
 }
