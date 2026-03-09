@@ -320,3 +320,22 @@ meter::-webkit-meter-even-less-good-value {
     font-weight: 500;
     margin-right: 20px;
 }
+
+.mode-row {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 15px;
+}
+
+.mode-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.mode-option input[type="radio"] {
+    cursor: pointer;
+}
