@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Password Generator</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Password Generator</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="main-container">
@@ -28,12 +29,12 @@
 
     </div>
 
-    <!-- Strength Section -->
+    <!-- Strength Meter -->
     <div class="strength-section">
         <meter id="strength-meter" min="0" max="100"></meter>
     </div>
 
-    <!-- Copy + Strength Row -->
+    <!-- Copy + Strength -->
     <div class="copy-strength-row">
 
         <div class="strength-display">
@@ -73,61 +74,92 @@
 
     <!-- PASSWORD OPTIONS -->
     <div class="options" id="password-options">
-        <label><input type="checkbox" id="uppercase" checked> Uppercase</label>
-        <label><input type="checkbox" id="numbers" checked> Numbers</label>
-        <label><input type="checkbox" id="symbols" checked> Symbols</label>
-    </div>
 
-    <!-- PASSPHRASE OPTIONS -->
-
-    <div class="options hidden" id="passphrase-options">
-
-        <!-- Extra options -->
         <label>
-            <input type="checkbox" id="capitalize">
-            Capitals
+            <input type="checkbox" id="uppercase" checked>
+            Uppercase
         </label>
 
         <label>
-            <input type="checkbox" id="random-number">
+            <input type="checkbox" id="numbers" checked>
             Numbers
         </label>
 
-        <!-- Separators -->
         <label>
-            <input type="radio" name="separator" value="-" checked>
-            -
+            <input type="checkbox" id="symbols" checked>
+            Symbols
         </label>
 
-        <label>
-            <input type="radio" name="separator" value=".">
-            .
-        </label>
+    </div>
 
-        <label>
-            <input type="radio" name="separator" value="_">
-            _
-        </label>
+    <!-- PASSPHRASE OPTIONS -->
+    <div class="options hidden" id="passphrase-options">
 
-        <label>
-            <input type="radio" name="separator" value="!">
-            !
-        </label>
+        <div class="passphrase-row">
 
-        <label>
-            <input type="radio" name="separator" value="?">
-            ?
-        </label>
+            <!-- LEFT SIDE -->
+            <div class="passphrase-left">
 
-        <label>
-            <input type="radio" name="separator" value=" ">
-            ␣
-        </label>
+                <label>
+                    <input type="checkbox" id="capitalize">
+                    Capitals
+                </label>
+
+                <label>
+                    <input type="checkbox" id="random-number">
+                    Numbers
+                </label>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="separator-section">
+
+                <span class="separator-label">Separator:</span>
+
+                <div class="separator-group">
+
+                    <label class="separator-btn">
+                        <input type="radio" name="separator" value="-" checked>
+                        <span>-</span>
+                    </label>
+
+                    <label class="separator-btn">
+                        <input type="radio" name="separator" value=".">
+                        <span>.</span>
+                    </label>
+
+                    <label class="separator-btn">
+                        <input type="radio" name="separator" value="_">
+                        <span>_</span>
+                    </label>
+
+                    <label class="separator-btn">
+                        <input type="radio" name="separator" value="!">
+                        <span>!</span>
+                    </label>
+
+                    <label class="separator-btn">
+                        <input type="radio" name="separator" value="?">
+                        <span>?</span>
+                    </label>
+
+                    <label class="separator-btn">
+                        <input type="radio" name="separator" value=" ">
+                        <span>␣</span>
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
 </div>
 
 <script src="keeper.js"></script>
+
 </body>
 </html>

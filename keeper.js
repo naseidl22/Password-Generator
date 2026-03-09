@@ -367,6 +367,22 @@ function updatePassword(){
     //timeElement.textContent = `Password Strength Score: ${score.toFixed(2)}`;
     strengthMeter.value = score;
 
+    if (score >= 100) {
+        strengthText.textContent = "Very Strong";
+    }
+    else if (score >= 80) {
+        strengthText.textContent = "Strong";
+    }
+    else if (score >= 60) {
+        strengthText.textContent = "Fair";
+    }
+    else if (score >= 30) {
+        strengthText.textContent = "Weak";
+    }
+    else { 
+        strengthText.textContent = "Very Weak";
+    }
+
 }
 
 function updatePassphrase(){
@@ -376,6 +392,7 @@ function updatePassphrase(){
     let passphrase = generatePassphrase(numWords, separator);
 
     passwordField.value = passphrase;
+    strengthText.textContent = "Very Strong";
 
 }
 
