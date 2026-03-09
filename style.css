@@ -395,3 +395,31 @@ input[type="range"]::-moz-range-thumb:hover {
 .saved-link button:hover {
     background: #1d4ed8;
 }
+
+.delete-btn {
+    margin-left: 6px !important; 
+    padding: 6px 10px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    background: #ef4444 !important;
+    color: white !important;
+    cursor: pointer !important;
+}
+
+.delete-btn:hover {
+    background: #dc2626 !important;
+}
+
+.copy-btn-list {
+    margin-left: 6px !important; 
+    padding: 6px 10px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    background: #f59e0b !important;  /* orange */
+    color: white !important;
+    cursor: pointer !important;
+}
+
+.copy-btn-list:hover {
+    background: #d97706 !important; /* darker orange on hover */
+}

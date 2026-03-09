@@ -12,7 +12,7 @@ async function getMasterKey(password) {
     return crypto.subtle.deriveKey(
         {
             name: "PBKDF2",
-            salt: enc.encode("my_salt"), // can randomize per user for extra security
+            salt: enc.encode("my_salt"),
             iterations: 100000,
             hash: "SHA-256"
         },
