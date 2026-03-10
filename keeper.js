@@ -396,16 +396,19 @@ function updatePassphrase(){
 
 }
 
-function secureRandomInt(min, max) {
+function secureRandomInt(min, max) { // inclusive
     if (max <= min) throw new Error("max must be greater than min");
 
     const range = max - min + 1;
     const maxUint32 = 0xFFFFFFFF;
+
+    // Rejection sampling to avoid modulo bias
     const limit = maxUint32 - (maxUint32 % range);
 
     let rand;
     const arr = new Uint32Array(1);
 
+    // Generate random numbers until we get one within the limit
     do {
         crypto.getRandomValues(arr);
         rand = arr[0];
